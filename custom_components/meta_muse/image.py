@@ -31,7 +31,7 @@ async def async_setup_entry(
 class MuseImageEntity(ImageEntity):
     """Image entity showing the last generated image."""
 
-    _attr_name = "Muse ostatni obraz"
+    _attr_name = "Meta Muse ostatni obraz"
 
     def __init__(self, coordinator: MuseImageCoordinator) -> None:
         """Initialize the entity."""

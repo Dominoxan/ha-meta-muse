@@ -282,7 +282,7 @@ class MuseImageCoordinator:
 
 
 async def _handle_generate_service(call: ServiceCall) -> ServiceResponse:
-    """Handle the muse_image.generate service."""
+    """Handle the meta_muse.generate service."""
     coordinators: dict[str, MuseImageCoordinator] = call.hass.data.get(DOMAIN, {})
     if not coordinators:
         raise HomeAssistantError("Integracja Meta Muse Image nie jest skonfigurowana.")

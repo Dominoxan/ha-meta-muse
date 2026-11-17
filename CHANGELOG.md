@@ -3,6 +3,21 @@
 Wszystkie istotne zmiany w tym projekcie. Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/),
 wersjonowanie: [SemVer](https://semver.org/lang/pl/).
 
+## [2.0.0] — 2026-11-17
+
+### Zmienione (BREAKING)
+- Domena integracji `muse_image` → **`meta_muse`** (integracja nie robi już tylko obrazów).
+- Klucz YAML `muse_image:` → `meta_muse:`, usługa `muse_image.generate` → `meta_muse.generate`.
+- Nazwy encji (a więc i `entity_id`): `ai_task.meta_muse`, `image.meta_muse_ostatni_obraz`,
+  `sensor.meta_muse_koszt`; agent `conversation.meta_muse_spark` bez zmian.
+- Repozytorium: `Dominoxan/ha-meta-muse` (wcześniej `ha-muse-image`, stary URL przekierowuje).
+
+### Migracja z 1.x
+1. Usuń katalog `custom_components/muse_image/` i stary wpis integracji (Ustawienia → Urządzenia i usługi).
+2. Zmień klucz w `configuration.yaml` na `meta_muse:` i zrestartuj HA.
+3. Popraw odwołania do usługi `muse_image.generate` i starych `entity_id` w automatyzacjach/skryptach.
+   Licznik kosztów startuje od zera.
+
 ## [1.1.0] — 2026-11-17
 
 ### Dodane
@@ -20,6 +35,6 @@ wersjonowanie: [SemVer](https://semver.org/lang/pl/).
 ## [1.0.0] — 2026-11-17
 
 ### Dodane
-- Pierwsze wydanie: usługa `muse_image.generate`, platforma `ai_task` (Generate image),
-  `image.muse_ostatni_obraz`, `sensor.muse_image_koszt` (USD, przywracany po restarcie),
+- Pierwsze wydanie: usługa `meta_muse.generate`, platforma `ai_task` (Generate image),
+  `image.muse_ostatni_obraz`, `sensor.meta_muse_koszt` (USD, przywracany po restarcie),
   konfiguracja YAML (`async_step_import`) i UI, opcje katalogu/rozmiaru/języka, diagnostyka bez klucza API.

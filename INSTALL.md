@@ -5,13 +5,13 @@ ostatni obraz na dashboardzie. Wersja 1.0.0, zero zewnętrznych zależności.
 
 ## 1. Kopiowanie plików
 
-Skopiuj katalog `custom_components/muse_image/` do `/config/custom_components/muse_image/`
+Skopiuj katalog `custom_components/meta_muse/` do `/config/custom_components/meta_muse/`
 na HAOS (np. przez add-on Samba/SSH lub File editor).
 
 Struktura po instalacji:
 
 ```
-/config/custom_components/muse_image/
+/config/custom_components/meta_muse/
   __init__.py
   manifest.json
   const.py
@@ -31,7 +31,7 @@ Struktura po instalacji:
 W `/config/configuration.yaml`:
 
 ```yaml
-muse_image:
+meta_muse:
   api_key: !secret model_api_key
   output_dir: /media/muse
   default_size: 1536x1024
@@ -64,7 +64,7 @@ w przycisku „Konfiguruj" (opcje).
 Developer Tools → Akcje (Actions):
 
 ```yaml
-action: muse_image.generate
+action: meta_muse.generate
 data:
   prompt: "Zachód słońca nad górami"
   size: "1536x1024"
@@ -89,9 +89,9 @@ Oczekiwany plik: `/media/muse/zachod.png` (przy domyślnym `output_dir`:
 
 | Encja | Opis |
 |-------|------|
-| `ai_task.muse_image` | Zadanie AI: generuje obraz z promptu. |
+| `ai_task.meta_muse` | Zadanie AI: generuje obraz z promptu. |
 | `image.muse_ostatni_obraz` | Ostatnio wygenerowany obraz (atrybut `last_prompt`). |
-| `sensor.muse_image_koszt` | Suma kosztów w USD (atrybuty: `obrazy`, `koszt_obrazu`). |
+| `sensor.meta_muse_koszt` | Suma kosztów w USD (atrybuty: `obrazy`, `koszt_obrazu`). |
 | `conversation.meta_muse_spark` | Agent czatu „Meta Muse Spark" (v2). |
 
 ## 6. Gdy się nie ładuje
@@ -99,12 +99,12 @@ Oczekiwany plik: `/media/muse/zachod.png` (przy domyślnym `output_dir`:
 Sprawdź logi:
 
 ```
-homeassistant.components.muse_image
+homeassistant.components.meta_muse
 ```
 
 w Ustawienia → System → Logi. Najczęstsze przyczyny:
 
-- Brak pliku w `/config/custom_components/muse_image/` albo literówka w nazwie
+- Brak pliku w `/config/custom_components/meta_muse/` albo literówka w nazwie
   katalogu → w logach „Integration not found" / „Platform not found".
 - Nieprawidłowy YAML w `configuration.yaml` (wcięcia) → błąd walidacji konfiguracji.
 - Zły klucz API → integracja się załaduje, ale generowanie rzuci
@@ -114,7 +114,7 @@ w Ustawienia → System → Logi. Najczęstsze przyczyny:
 
 ## 7. Koszty
 
-Każdy zwrócony obraz kosztuje **0.01 USD**. `sensor.muse_image_koszt` sumuje
+Każdy zwrócony obraz kosztuje **0.01 USD**. `sensor.meta_muse_koszt` sumuje
 koszty w ramach bieżącej sesji i przywraca wartość po restarcie HA.
 
 ## 8. Agent czatu „Meta Muse Spark" (v2)

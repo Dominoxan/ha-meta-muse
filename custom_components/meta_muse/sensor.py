@@ -34,7 +34,7 @@ async def async_setup_entry(
 class MuseImageCostSensor(RestoreSensor):
     """Sensor reporting the total cost of generated images."""
 
-    _attr_name = "Muse image koszt"
+    _attr_name = "Meta Muse koszt"
     _attr_device_class = SensorDeviceClass.MONETARY
     _attr_state_class = SensorStateClass.TOTAL
     _attr_native_unit_of_measurement = "USD"

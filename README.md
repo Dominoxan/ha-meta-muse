@@ -7,10 +7,10 @@ przez Meta Model API, prosto w Home Assistant. Wersja **1.1.0**, zero zewnętrzn
 
 | Platforma | Efekt |
 |---|---|
-| `ai_task` | `ai_task.muse_image` — akcja *Generate image* z promptu (widoczna w Narzędziach deweloperskich i automatyzacjach) |
-| usługa `muse_image.generate` | generowanie z poziomu skryptu/przycisku, zwraca ścieżkę, nazwę pliku i koszt |
+| `ai_task` | `ai_task.meta_muse` — akcja *Generate image* z promptu (widoczna w Narzędziach deweloperskich i automatyzacjach) |
+| usługa `meta_muse.generate` | generowanie z poziomu skryptu/przycisku, zwraca ścieżkę, nazwę pliku i koszt |
 | `image` | `image.muse_ostatni_obraz` — ostatnio wygenerowany obraz (atrybut `last_prompt`) |
-| `sensor` | `sensor.muse_image_koszt` — suma kosztów w USD + liczba obrazów |
+| `sensor` | `sensor.meta_muse_koszt` — suma kosztów w USD + liczba obrazów |
 | `conversation` | `conversation.meta_muse_spark` — agent „Meta Muse Spark” do Assist, potrafi sterować HA (tool calling) |
 
 Każdy zwrócony obraz kosztuje **$0.01** (cennik Meta Model API). Obrazy lądują w `/media/muse`
@@ -27,7 +27,7 @@ Każdy zwrócony obraz kosztuje **$0.01** (cennik Meta Model API). Obrazy ląduj
 
 ### Ręcznie
 
-Skopiuj `custom_components/muse_image/` do `/config/custom_components/muse_image/` i zrestartuj HA.
+Skopiuj `custom_components/meta_muse/` do `/config/custom_components/meta_muse/` i zrestartuj HA.
 
 ## Konfiguracja
 
@@ -37,7 +37,7 @@ Klucz API: [dev.meta.ai](https://dev.meta.ai) → Model API key.
 
 ```yaml
 # configuration.yaml
-muse_image:
+meta_muse:
   api_key: !secret muse_model_api_key
   output_dir: /media/muse
   default_size: 1536x1024
@@ -64,7 +64,7 @@ Ustawienia → Urządzenia i usługi → Meta Muse → **Konfiguruj**:
 ## Przykłady
 
 ```yaml
-action: muse_image.generate
+action: meta_muse.generate
 data:
   prompt: "Minimalistyczna ikona samolotu na granatowym tle, bez tekstu"
   size: "1536x1024"
@@ -77,7 +77,7 @@ Odpowiedź: `path: /media/muse/samolot.png`, `cost: 0.01`, `obrazy: 1`, `koszt_c
 ```yaml
 action: ai_task.generate_image
 data:
-  entity_id: ai_task.muse_image
+  entity_id: ai_task.meta_muse
   task_name: "ikona palmy"
   instructions: "Prosta ikona palmy na piaskowym tle, płaska, bez tekstu"
 ```

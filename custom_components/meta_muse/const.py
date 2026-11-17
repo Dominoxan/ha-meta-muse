@@ -2,7 +2,7 @@
 
 from typing import Final
 
-DOMAIN: Final = "muse_image"
+DOMAIN: Final = "meta_muse"
 
 # Config / options keys (names in English).
 CONF_API_KEY: Final = "api_key"

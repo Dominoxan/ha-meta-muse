@@ -28,7 +28,7 @@ async def async_setup_entry(
 class MuseImageTaskEntity(ai_task.AITaskEntity):
     """AI Task entity that generates images with Meta Muse."""
 
-    _attr_name = "Muse Image"
+    _attr_name = "Meta Muse"
 
     def __init__(self, coordinator: MuseImageCoordinator) -> None:
         """Initialize the entity."""
