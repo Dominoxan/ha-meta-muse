@@ -1,7 +1,13 @@
 # Meta Muse — integracja Home Assistant
 
 Generowanie obrazów (**Muse Image**, `muse-image-1.0`) i agent czatu (**Muse Spark**, `muse-spark-1.3`)
-przez Meta Model API, prosto w Home Assistant. Wersja **1.1.0**, zero zewnętrznych zależności.
+przez Meta Model API, prosto w Home Assistant. Wersja **2.1.0**, zero zewnętrznych zależności.
+
+[![HACS Validation](https://github.com/Dominoxan/ha-meta-muse/actions/workflows/validate.yml/badge.svg)](https://github.com/Dominoxan/ha-meta-muse/actions/workflows/validate.yml)
+[![Release](https://img.shields.io/github/v/release/Dominoxan/ha-meta-muse)](https://github.com/Dominoxan/ha-meta-muse/releases)
+[![License](https://img.shields.io/github/license/Dominoxan/ha-meta-muse)](LICENSE)
+
+<img src="custom_components/meta_muse/brand/logo.png" alt="Meta Muse" width="420">
 
 ## Co daje
 
@@ -9,8 +15,8 @@ przez Meta Model API, prosto w Home Assistant. Wersja **1.1.0**, zero zewnętrzn
 |---|---|
 | `ai_task` | `ai_task.meta_muse` — akcja *Generate image* z promptu (widoczna w Narzędziach deweloperskich i automatyzacjach) |
 | usługa `meta_muse.generate` | generowanie z poziomu skryptu/przycisku, zwraca ścieżkę, nazwę pliku i koszt |
-| `image` | `image.muse_ostatni_obraz` — ostatnio wygenerowany obraz (atrybut `last_prompt`) |
-| `sensor` | `sensor.meta_muse_koszt` — suma kosztów w USD + liczba obrazów |
+| `image` | `image.meta_muse_ostatni_obraz` — ostatnio wygenerowany obraz (atrybut `last_prompt`) |
+| `sensor` | `sensor.meta_muse_koszt` — suma kosztów w USD + liczba obrazów; liczniki przeżywają restart (plik `<output_dir>/.meta_muse_stats.json`) |
 | `conversation` | `conversation.meta_muse_spark` — agent „Meta Muse Spark” do Assist, potrafi sterować HA (tool calling) |
 
 Każdy zwrócony obraz kosztuje **$0.01** (cennik Meta Model API). Obrazy lądują w `/media/muse`
@@ -100,6 +106,27 @@ Wyłączenie „Sterowanie Home Assistant” w opcjach odbiera agentowi funkcję
 - Rozmiar (`size`) ustawia **proporcje**, nie dokładne piksele; model zwraca własną rozdzielczość.
 - Długie generowanie (>30 s) potrafi przekroczyć timeout odpowiedzi usługi — plik i licznik i tak się zgadzają.
 - Klucz API jest redagowany w diagnostyce.
+
+## Trwałość stanu
+
+- `last_image_path` i liczniki są zapisywane do `<output_dir>/.meta_muse_stats.json`
+  (`obrazy`, `koszt_usd`, `last_prompt`, `updated`). Dzięki temu po restarcie HA:
+  - `sensor.meta_muse_koszt` wraca z tą samą wartością (nie zeruje się),
+  - `image.meta_muse_ostatni_obraz` pokazuje najnowszy PNG z katalogu zamiast złamanej miniaturki,
+  - atrybut `last_prompt` jest odtwarzany.
+- `RestoreSensor` działa jako fallback, gdy pliku jeszcze nie ma (świeża instalacja).
+- Skasowanie pliku zeruje licznik; obrazów w katalogu to nie usuwa.
+
+## Rozwiązywanie problemów
+
+| Objaw | Przyczyna / co zrobić |
+|---|---|
+| Złamana miniaturka w `image.meta_muse_ostatni_obraz` | brak jakiegokolwiek PNG w `output_dir` — wygeneruj obraz albo popraw `output_dir` w opcjach |
+| `Meta API zwróciło błąd 401/403` | zły/wygasły klucz API — podmień w `secrets.yaml` lub w opcjach |
+| Usługa zwraca „dispatched, timed out" | generowanie > timeout odpowiedzi; sprawdź plik w `/media/muse` i sensor kosztów |
+| Encja pojawia się po restarcie jako `unknown` | brak pliku statystyk i brak historii stanu — po pierwszym obrazie wszystko wraca |
+| Agent nie steruje HA | wyłączone „Sterowanie Home Assistant" w opcjach albo encje nie są wystawione do Assist |
+| Karta/agent nie widzi zmian po aktualizacji | restart HA po podmianie plików integracji |
 
 ## Licencja
 
