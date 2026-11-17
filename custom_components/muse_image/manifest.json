@@ -1,0 +1,13 @@
+{
+  "domain": "muse_image",
+  "name": "Meta Muse",
+  "version": "1.1.0",
+  "codeowners": ["@dominik"],
+  "config_flow": true,
+  "dependencies": ["ai_task", "conversation", "image"],
+  "documentation": "https://github.com/dominik/ha-muse-image/blob/main/README.md",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/dominik/ha-muse-image/issues",
+  "requirements": []
+}

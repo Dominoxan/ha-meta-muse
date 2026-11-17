@@ -1,0 +1,34 @@
+generate:
+  name: Wygeneruj obraz
+  description: >-
+    Generuje obraz przez Meta Model API (muse-image-1.0), zapisuje go do
+    katalogu wyjściowego i zwraca ścieżkę oraz koszt.
+  fields:
+    prompt:
+      name: Prompt
+      description: Tekst promptu przekazywany do modelu.
+      required: true
+      example: Zachód słońca nad górami
+      selector:
+        text: {}
+    size:
+      name: Rozmiar
+      description: Proporcje obrazu (np. 1536x1024). Domyślnie wartość z opcji integracji.
+      required: false
+      example: "1536x1024"
+      selector:
+        text: {}
+    filename:
+      name: Nazwa pliku
+      description: Nazwa pliku wyjściowego (bez ścieżki). Domyślnie generowana z datą.
+      required: false
+      example: zachod.png
+      selector:
+        text: {}
+    overwrite:
+      name: Nadpisz
+      description: Nadpisz plik, jeśli już istnieje.
+      required: false
+      default: false
+      selector:
+        boolean: {}

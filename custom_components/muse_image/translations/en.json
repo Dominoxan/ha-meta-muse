@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Meta Muse",
+        "description": "Połącz Meta Model API (muse-image-1.0).",
+        "data": {
+          "api_key": "Klucz API"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Integracja jest już skonfigurowana"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje Meta Muse",
+        "data": {
+          "default_size": "Domyślny rozmiar",
+          "output_dir": "Katalog wyjściowy",
+          "language": "Język promptu",
+          "model": "Model czatu",
+          "control_ha": "Sterowanie Home Assistant",
+          "prompt": "Instrukcje systemowe"
+        }
+      }
+    }
+  }
+}
