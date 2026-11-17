@@ -21,7 +21,7 @@ Każdy zwrócony obraz kosztuje **$0.01** (cennik Meta Model API). Obrazy ląduj
 ### HACS (custom repository)
 
 1. HACS → ⋮ → **Custom repositories**.
-2. URL: `https://github.com/Dominoxan/ha-muse-image`, kategoria **Integration**.
+2. URL: `https://github.com/Dominoxan/ha-meta-muse`, kategoria **Integration**.
 3. Zainstaluj „Meta Muse”, potem **zrestartuj Home Assistant**.
 4. Ustawienia → Urządzenia i usługi → **Dodaj integrację** → „Meta Muse” → wklej klucz API.
 
