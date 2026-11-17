@@ -3,6 +3,13 @@
 Wszystkie istotne zmiany w tym projekcie. Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/),
 wersjonowanie: [SemVer](https://semver.org/lang/pl/).
 
+## [2.1.1] — 2026-11-17
+
+### Poprawione
+- `manifest.json`: kolejność kluczy zgodna z hassfest (`domain`, `name`, reszta alfabetycznie),
+  `codeowners: @Dominoxan`, linki `documentation`/`issue_tracker` wskazują na `Dominoxan/ha-meta-muse`.
+- CI: workflow `Validate` (hassfest + HACS action) — status zielony.
+
 ## [2.1.0] — 2026-11-17
 
 ### Dodane
