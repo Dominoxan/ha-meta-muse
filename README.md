@@ -3,6 +3,7 @@
 Generowanie obrazów (**Muse Image**, `muse-image-1.0`) i agent czatu (**Muse Spark**, `muse-spark-1.3`)
 przez Meta Model API, prosto w Home Assistant. Wersja **2.1.0**, zero zewnętrznych zależności.
 
+[![Validate](https://github.com/Dominoxan/ha-meta-muse/actions/workflows/validate.yml/badge.svg)](https://github.com/Dominoxan/ha-meta-muse/actions/workflows/validate.yml)
 [![Release](https://img.shields.io/github/v/release/Dominoxan/ha-meta-muse)](https://github.com/Dominoxan/ha-meta-muse/releases)
 [![License](https://img.shields.io/github/license/Dominoxan/ha-meta-muse)](LICENSE)
 
