@@ -3,6 +3,14 @@
 Wszystkie istotne zmiany w tym projekcie. Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/),
 wersjonowanie: [SemVer](https://semver.org/lang/pl/).
 
+## [2.1.0] — 2026-11-17
+
+### Dodane
+- Liczniki kosztów przeżywają restart HA i odtworzenie wpisu: stan zapisywany do
+  `<output_dir>/.meta_muse_stats.json` (`obrazy`, `koszt_usd`, `last_prompt`, `updated`)
+  po każdym obrazie i wczytywany przy starcie. `RestoreSensor` został jako fallback.
+- `last_prompt` encji obrazu jest przywracany razem z licznikami.
+
 ## [2.0.1] — 2026-11-17
 
 ### Poprawione

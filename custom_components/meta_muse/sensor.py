@@ -62,17 +62,25 @@ class MuseImageCostSensor(RestoreSensor):
         """Restore the cost counters from the previous run."""
         await super().async_added_to_hass()
 
-        last_sensor_data = await self.async_get_last_sensor_data()
-        if last_sensor_data is not None and last_sensor_data.native_value is not None:
-            try:
-                self._coordinator.cost_total = float(last_sensor_data.native_value)
-            except (TypeError, ValueError):
-                pass
+        # Liczniki z pliku na dysku mają pierwszeństwo (przeżywają restart
+        # i odtworzenie wpisu konfiguracyjnego); RestoreSensor to fallback.
+        if self._coordinator.image_count == 0 and self._coordinator.cost_total == 0.0:
+            last_sensor_data = await self.async_get_last_sensor_data()
+            if (
+                last_sensor_data is not None
+                and last_sensor_data.native_value is not None
+            ):
+                try:
+                    self._coordinator.cost_total = float(last_sensor_data.native_value)
+                except (TypeError, ValueError):
+                    pass
 
-        if (state := await self.async_get_last_state()) is not None:
-            obrazy = state.attributes.get(ATTR_OBRAZY)
-            if isinstance(obrazy, int):
-                self._coordinator.image_count = obrazy
+            if (state := await self.async_get_last_state()) is not None:
+                obrazy = state.attributes.get(ATTR_OBRAZY)
+                if isinstance(obrazy, int):
+                    self._coordinator.image_count = obrazy
+
+        self.async_write_ha_state()
 
     @callback
     def async_update_cost(self) -> None:

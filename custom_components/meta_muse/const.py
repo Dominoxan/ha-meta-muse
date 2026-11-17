@@ -36,6 +36,9 @@ CHAT_REQUEST_TIMEOUT: Final = 120  # seconds; chat turn timeout
 # One returned image costs 0.01 USD; n images = n * 0.01 USD.
 COST_PER_IMAGE: Final = 0.01
 
+# Liczniki kosztów trzymane na dysku obok obrazów (przeżywają restart i recreated wpis).
+STATS_FILENAME: Final = ".meta_muse_stats.json"
+
 # Defaults.
 DEFAULT_OUTPUT_DIR: Final = "/media/muse"
 DEFAULT_SIZE: Final = "1536x1024"

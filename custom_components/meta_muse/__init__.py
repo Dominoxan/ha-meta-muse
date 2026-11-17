@@ -50,6 +50,7 @@ from .const import (
     MODEL_NAME,
     REQUEST_TIMEOUT,
     SERVICE_GENERATE,
+    STATS_FILENAME,
 )
 
 if TYPE_CHECKING:
@@ -171,6 +172,7 @@ class MuseImageCoordinator:
         self.cost_total += cost
         self.last_image_path = path
         self.last_prompt = prompt
+        await self.hass.async_add_executor_job(self.save_stats)
 
         if self.image_entity is not None:
             self.image_entity.async_refresh_image()
@@ -292,6 +294,42 @@ class MuseImageCoordinator:
             return None
         return max(files, key=lambda p: p.stat().st_mtime, default=None)
 
+    @property
+    def stats_path(self) -> Path:
+        """Path of the JSON file that keeps counters across restarts."""
+        return self.output_dir / STATS_FILENAME
+
+    def load_stats(self) -> None:
+        """Load counters from disk (runs in the executor)."""
+        try:
+            data = json.loads(self.stats_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return
+        try:
+            self.image_count = int(data.get("obrazy") or 0)
+            self.cost_total = float(data.get("koszt_usd") or 0.0)
+        except (TypeError, ValueError):
+            return
+        prompt = data.get("last_prompt")
+        if isinstance(prompt, str) and prompt:
+            self.last_prompt = prompt
+
+    def save_stats(self) -> None:
+        """Persist counters to disk (runs in the executor)."""
+        payload = {
+            "obrazy": self.image_count,
+            "koszt_usd": round(self.cost_total, 2),
+            "last_prompt": self.last_prompt,
+            "updated": dt_util.now().isoformat(timespec="seconds"),
+        }
+        try:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+            self.stats_path.write_text(
+                json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+            )
+        except OSError as err:
+            _LOGGER.warning("Meta Muse: nie udało się zapisać statystyk: %s", err)
+
 
 async def _handle_generate_service(call: ServiceCall) -> ServiceResponse:
     """Handle the meta_muse.generate service."""
@@ -360,6 +398,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
         if newest is not None:
             coordinator.last_image_path = newest
             _LOGGER.debug("Meta Muse: przywrócono ostatni obraz %s", newest)
+
+    await hass.async_add_executor_job(coordinator.load_stats)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
