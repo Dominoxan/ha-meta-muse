@@ -280,6 +280,18 @@ class MuseImageCoordinator:
         """Return a timestamped default filename."""
         return f"muse_{dt_util.now().strftime('%Y%m%d_%H%M%S')}.png"
 
+    def newest_image_file(self) -> Path | None:
+        """Return the newest PNG in the output dir (runs in the executor).
+
+        `last_image_path` lives only in memory, so after a restart the image entity
+        would otherwise have nothing to show until the next generation.
+        """
+        try:
+            files = [p for p in self.output_dir.glob("*.png") if p.is_file()]
+        except OSError:
+            return None
+        return max(files, key=lambda p: p.stat().st_mtime, default=None)
+
 
 async def _handle_generate_service(call: ServiceCall) -> ServiceResponse:
     """Handle the meta_muse.generate service."""
@@ -342,6 +354,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
             coordinator.output_dir,
             err,
         )
+
+    if coordinator.last_image_path is None:
+        newest = await hass.async_add_executor_job(coordinator.newest_image_file)
+        if newest is not None:
+            coordinator.last_image_path = newest
+            _LOGGER.debug("Meta Muse: przywrócono ostatni obraz %s", newest)
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

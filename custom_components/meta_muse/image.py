@@ -50,6 +50,28 @@ class MuseImageEntity(ImageEntity):
         except OSError:
             return None
 
+    async def async_added_to_hass(self) -> None:
+        """Adopt the image restored by the coordinator (survives HA restarts)."""
+        await super().async_added_to_hass()
+        path = self._coordinator.last_image_path
+        if path is None:
+            return
+        mtime = await self.hass.async_add_executor_job(self._file_mtime, path)
+        if mtime is None:
+            return
+        self._attr_image_last_updated = mtime
+        self.__dict__.pop("image_last_updated", None)
+        self.__dict__.pop("image_url", None)
+        self.async_write_ha_state()
+
+    @staticmethod
+    def _file_mtime(path) -> "datetime | None":
+        """Return the file modification time in UTC."""
+        try:
+            return dt_util.utc_from_timestamp(path.stat().st_mtime)
+        except OSError:
+            return None
+
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Expose the last prompt as an attribute."""

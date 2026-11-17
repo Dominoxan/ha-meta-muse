@@ -1,7 +1,7 @@
 {
   "domain": "meta_muse",
   "name": "Meta Muse",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "codeowners": [
     "@dominik"
   ],

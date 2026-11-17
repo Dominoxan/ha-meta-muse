@@ -3,6 +3,13 @@
 Wszystkie istotne zmiany w tym projekcie. Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/),
 wersjonowanie: [SemVer](https://semver.org/lang/pl/).
 
+## [2.0.1] — 2026-11-17
+
+### Poprawione
+- `image.meta_muse_ostatni_obraz` pokazywał złamaną miniaturkę po restarcie HA: `last_image_path`
+  żyje tylko w pamięci. Przy starcie integracja przywraca teraz najnowszy plik PNG z katalogu
+  wyjściowego, a encja ustawia `image_last_updated` z mtime pliku.
+
 ## [2.0.0] — 2026-11-17
 
 ### Zmienione (BREAKING)
